@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 60%;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #taskList {
+      list-style-type: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    #taskList li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      margin: 10px 0;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #taskList li button {
+      background-color: #dc3545;
+      border: none;
+      padding: 5px 10px;
+      color: white;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+
+    #taskList li button:hover {
+      background-color: #c82333;
+    }
+
+    .empty-message {
+      color: #555;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Task Manager</h1>
+  <div>
+    <input type="text" id="newTask" placeholder="Enter a new task">
+    <button id="addTaskButton">Add Task</button>
+  </div>
+  <ul id="taskList"></ul>
+  <p id="emptyMessage" class="empty-message">Your task list is empty.</p>
+
+  <script>
+    // Initialize variables
+    let tasks = [];
+    const taskList = document.getElementById("taskList");
+    const newTaskInput = document.getElementById("newTask");
+    const addTaskButton = document.getElementById("addTaskButton");
+    const emptyMessage = document.getElementById("emptyMessage");
+
+    // Render the task list
+    function renderTasks() {
+      taskList.innerHTML = ""; // Clear the task list
+
+      if (tasks.length === 0) {
+        emptyMessage.style.display = "block"; // Show empty message
+        return;
+      }
+
+      emptyMessage.style.display = "none"; // Hide empty message
+
+      tasks.forEach((task, index) => {
+        const listItem = document.createElement("li");
+
+        // Task name
+        const taskText = document.createElement("span");
+        taskText.textContent = task;
+
+        // Remove button
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.addEventListener("click", () => {
+          tasks.splice(index, 1); // Remove task
+          renderTasks(); // Update the task list
+        });
+
+        listItem.appendChild(taskText);
+        listItem.appendChild(removeButton);
+        taskList.appendChild(listItem);
+      });
+    }
+
+    // Add a new task
+    addTaskButton.addEventListener("click", () => {
+      const newTask = newTaskInput.value.trim(); // Get the input value
+      if (newTask) {
+        tasks.push(newTask); // Add the task to the list
+        newTaskInput.value = ""; // Clear the input field
+        renderTasks(); // Update the task list
+      }
+    });
+
+    // Initial render
+    renderTasks();
+  </script>
+</body>
+</html>
